@@ -25,7 +25,7 @@ def laisuat(fromdate,todate):
     header={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0',
            'Cookie': 'language=vi-VN; ASP.NET_SessionId={}; __RequestVerificationToken={}; Theme=Light; _ga=GA1.2.521754408.1675222361; _gid=GA1.2.2063415792.1675222361; AnonymousNotification='.format(revasp,revtoken)
            }
-    payload={'type':'1','fromYear':'2022','toYear':'2023','from':'2022-01-01','to':'2023-02-01','normTypeID':'66',
+    payload={'type':'1','fromYear':fromdate.year,'toYear':todate.year,'from':tungay,'to':denngay,'normTypeID':'66',
         '__RequestVerificationToken': '{}'.format(token)
         }
     ls=requests.post(url,headers=header,data=payload)
