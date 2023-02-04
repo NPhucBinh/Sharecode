@@ -8,7 +8,10 @@ from bs4 import BeautifulSoup
 
 
 '''
-Hàm cuối lấy dữ liệu là hàm get_data_vnindex('số trang','ngày bắt đầu','ngày kết thúc')
+Hàm cuối lấy dữ liệu là hàm:
+```
+   get_data_vnindex('số trang')
+```
 Vấn đề gặp phải là dữ liệu khi requests và trả về khi check trên trình duyệt là kiểu 'plain'.
 Vậy nên mình dùng số trang để điều hướng vì mỗi trang chỉ trả về dữ liệu của 20 ngày.
 Mình để file .html mà dữ liệu trả về cùng thư mục các bạn xem thử nhé.
@@ -105,15 +108,19 @@ def data_vnindex(number_page,fdate,tdate): #hàm xử lý data load về
         df.rename(columns={'KL':'KLGD khớp lệnh','GT':'GTGD khớp lệnh','KL.1':'KLGD thỏa thuận','GT.1':'GTGD thỏa thuận'}, inplace=True)
     return df.reset_index(drop=True)
 
-def get_data_vnindex(number_page,fdate,tdate): # Hàm load dữ liệu theo ngày nhập vào
-    fdate=pd.to_datetime(fdate)
+def get_data_vnindex(number_page): # Hàm load theo page
+    date_now=dt.datetime.now()
+    fdate=pd.to_datetime(date_now)
     fdate=fdate.strftime('%d-%m-%Y')
     fdate=fdate.replace('-','/')
+    tdate=date_now-dt.timedelta(170)
     tdate=pd.to_datetime(tdate)
     tdate=tdate.strftime('%d-%m-%Y')
     tdate=tdate.replace('-','/')
     vSTT,vsttG,asp_cookie=cooki()
     header=headers(asp_cookie)
     df=data_vnindex(number_page,fdate,tdate)
+    ngay=len(df)
+    df=df.rename_axis((f'{ngay} Ngày'),axis='columns')
     return df
 
